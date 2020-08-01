@@ -1,0 +1,7 @@
+*
+!poetry.lock
+!pyproject.toml
+!manage.py
+!nrk_nynorsk
+!nrk_nynorsk_scraper
+!docker-entrypoint.sh

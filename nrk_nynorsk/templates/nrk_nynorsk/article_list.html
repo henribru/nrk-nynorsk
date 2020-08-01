@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="nn-NO">
+    <head>
+        <meta charset="UTF-8">
+        <title>Nynorskartiklar hos NRK</title>
+        <style>
+            body{
+                margin:1em auto;
+                max-width:40em;
+                padding:0 .62em;
+                font:1.1em/1.62 sans-serif;
+            }
+            h1,h2,h3 {
+                line-height:1.2;
+            }
+            h2 {
+                font-size: 1.0em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Nynorskartiklar hos NRK</h1>
+
+        <form method="GET">
+            <input type="text" name="q" value="{{ request.GET.q }}">
+            <button type="submit">Søk i artiklar</button>
+            <button type="submit" name="lucky">Eg kjenner meg heldig</button>
+        </form>
+
+        <ul>
+        {% for article in page_obj %}
+            <li>
+                <h2 class="article-header"><a href="{{ article.url }}">{{ article.publication_date|date }} - {{ article.title }}</a></h2>
+                <p>{{ article.description }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; første</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">førre</a>
+                {% endif %}
+
+                <span class="current">
+                    Side {{ page_obj.number }} av {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">neste</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">siste &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </body>
+</html>
