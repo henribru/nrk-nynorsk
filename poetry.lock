@@ -499,6 +499,33 @@ six = "*"
 
 [[package]]
 category = "main"
+description = "Python client for Sentry (https://sentry.io)"
+name = "sentry-sdk"
+optional = false
+python-versions = "*"
+version = "0.16.2"
+
+[package.dependencies]
+certifi = "*"
+urllib3 = ">=1.10.0"
+
+[package.extras]
+aiohttp = ["aiohttp (>=3.5)"]
+beam = ["apache-beam (>=2.12)"]
+bottle = ["bottle (>=0.12.13)"]
+celery = ["celery (>=3)"]
+django = ["django (>=1.8)"]
+falcon = ["falcon (>=1.4)"]
+flask = ["flask (>=0.11)", "blinker (>=1.1)"]
+pure_eval = ["pure-eval", "executing", "asttokens"]
+pyspark = ["pyspark (>=2.4.4)"]
+rq = ["rq (>=0.6)"]
+sanic = ["sanic (>=0.8)"]
+sqlalchemy = ["sqlalchemy (>=1.2)"]
+tornado = ["tornado (>=5)"]
+
+[[package]]
+category = "main"
 description = "Service identity verification for pyOpenSSL & cryptography."
 name = "service-identity"
 optional = false
@@ -650,7 +677,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "bbb7c6b8c2d83e23cdcabd2ae5a34e5d42977489ff964758282e9e22db5f6e53"
+content-hash = "d739fa158e7ba79deba72dba070dfd02310a8347972a9bd30c9efa0f4374512c"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -995,6 +1022,10 @@ scrapy = [
 scrapy-djangoitem = [
     {file = "scrapy-djangoitem-1.1.1.tar.gz", hash = "sha256:2c633ae1559f6e3d43c9a5ebb19aa5a64152deef434aa3fa57168e6b002d9c50"},
     {file = "scrapy_djangoitem-1.1.1-py2.py3-none-any.whl", hash = "sha256:58da093778f2cd92734b5539adcb60d59854475050d7511c42173bd8c104acef"},
+]
+sentry-sdk = [
+    {file = "sentry-sdk-0.16.2.tar.gz", hash = "sha256:38bb09d0277117f76507c8728d9a5156f09a47ac5175bb8072513859d19a593b"},
+    {file = "sentry_sdk-0.16.2-py2.py3-none-any.whl", hash = "sha256:2de15b13836fa3522815a933bd9c887c77f4868071043349f94f1b896c1bcfb8"},
 ]
 service-identity = [
     {file = "service_identity-18.1.0-py2.py3-none-any.whl", hash = "sha256:001c0707759cb3de7e49c078a7c0c9cd12594161d3bf06b9c254fdcb1a60dc36"},
