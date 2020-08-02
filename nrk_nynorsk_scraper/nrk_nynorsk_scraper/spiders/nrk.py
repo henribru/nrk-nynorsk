@@ -32,10 +32,15 @@ class NrkSpider(SitemapSpider, CrawlSpider):
             )
         ):
             return None
+        publication_date = response.xpath(
+            "//time[contains(@class, 'datePublished')]/@datetime"
+        ).extract_first()
+        if publication_date is None:
+            publication_date = get_meta_tag(response, "name", "dc.date.issued")
         return ArticleItem(
             title=get_meta_tag(response, "property", "og:title"),
             description=get_meta_tag(response, "property", "og:description"),
-            publication_date=get_meta_tag(response, "name", "dc.date.issued"),
+            publication_date=publication_date,
             url=get_meta_tag(response, "property", "og:url"),
         )
 
