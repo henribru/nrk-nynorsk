@@ -8,7 +8,7 @@ class Article(models.Model):
     url = models.TextField(unique=True)
 
     def __repr__(self):
-        return f"<Article title={self.title}>"
+        return f"<Article title={self.title!r}>"
 
 
 class RSSFeed(models.Model):
@@ -16,4 +16,4 @@ class RSSFeed(models.Model):
     last_checked = models.DateTimeField(null=True, default=None)
 
     def __repr__(self):
-        return f"<RSSFeed url={self.url}>"
+        return f"<RSSFeed url={self.url!r}>"
