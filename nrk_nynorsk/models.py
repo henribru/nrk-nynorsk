@@ -15,5 +15,8 @@ class RSSFeed(models.Model):
     url = models.TextField(unique=True)
     last_checked = models.DateTimeField(null=True, default=None)
 
+    class Meta:
+        verbose_name = "RSS feed"
+
     def __repr__(self):
         return f"<RSSFeed url={self.url!r}>"
