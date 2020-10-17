@@ -7,7 +7,7 @@ class Article(models.Model):
     publication_date = models.DateTimeField()
     url = models.TextField(unique=True)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Article title={self.title!r}>"
 
 
@@ -18,5 +18,5 @@ class RSSFeed(models.Model):
     class Meta:
         verbose_name = "RSS feed"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<RSSFeed url={self.url!r}>"

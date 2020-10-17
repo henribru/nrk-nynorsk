@@ -1,4 +1,5 @@
 /*
+!.mypy.ini
 !poetry.lock
 !pyproject.toml
 !manage.py

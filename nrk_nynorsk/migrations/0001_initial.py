@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = []
+    dependencies = []  # type: ignore[var-annotated]
 
     operations = [
         migrations.CreateModel(
@@ -27,5 +27,5 @@ class Migration(migrations.Migration):
                 ("publication_date", models.DateField()),
                 ("url", models.TextField(unique=True)),
             ],
-        ),
+        )
     ]

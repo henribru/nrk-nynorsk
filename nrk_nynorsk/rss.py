@@ -1,9 +1,13 @@
 import logging
 import time
+from typing import Iterator, List, Tuple, cast
+
+from typing_extensions import Literal
 
 import pendulum
+
 import requests
-import lxml
+import lxml.etree
 import lxml.html
 
 from nrk_nynorsk.models import Article
@@ -11,7 +15,7 @@ from nrk_nynorsk.models import RSSFeed
 
 logger = logging.getLogger(__name__)
 
-feeds = [
+feed_urls = [
     "https://www.nrk.no/toppsaker.rss",
     "https://www.nrk.no/nyheter/siste.rss",
     "https://www.nrk.no/norge/toppsaker.rss",
@@ -54,9 +58,9 @@ feeds = [
 ]
 
 
-def main():
-    for feed in feeds:
-        RSSFeed.objects.get_or_create(url=feed)
+def main() -> None:
+    for feed_url in feed_urls:
+        RSSFeed.objects.get_or_create(url=feed_url)
 
     with requests.Session() as session:
         session.headers.update({"User-Agent": "nrk_nynorsk_scraper"})
@@ -64,7 +68,7 @@ def main():
             check_feed(feed, session)
 
 
-def check_feed(feed, session):
+def check_feed(feed: RSSFeed, session: requests.Session) -> None:
     logger.debug("Checking feed %s (last checked %s)", feed.url, feed.last_checked)
     tree = get_tree(feed.url, "xml", session)
     last_checked = None
@@ -88,7 +92,7 @@ def check_feed(feed, session):
         if not is_in_nynorsk(tree):
             logger.debug("Not in Nynorsk")
             continue
-        article, created = Article.objects.update_or_create(
+        _, created = Article.objects.update_or_create(
             url=url,
             defaults={
                 "title": title,
@@ -106,30 +110,35 @@ def check_feed(feed, session):
     logger.debug("Done checking feed")
 
 
-def get_tree(url, type, session):
+def get_tree(
+    url: str, type: Literal["xml", "html"], session: requests.Session
+) -> lxml.etree._Element:
     response = session.get(url)
     response.raise_for_status()
     if type == "xml":
         return lxml.etree.fromstring(response.content)
     elif type == "html":
         return lxml.html.fromstring(response.content)
-    return None
+    raise ValueError("Invalid type")
 
 
-def get_feed_items(tree):
-    for item in tree.xpath("/rss/channel/item"):
+def get_feed_items(tree: lxml.etree._Element) -> Iterator[lxml.etree._Element]:
+    for item in cast(List[lxml.etree._Element], tree.xpath("/rss/channel/item")):
         yield item
 
 
-def extract_item(item):
-    title = item.xpath("title/text()")[0]
-    description = item.xpath("description/text()")[0]
-    url = item.xpath("link/text()")[0]
-    date = pendulum.parse(item.xpath("pubDate/text()")[0], strict=False)
+def extract_item(item: lxml.etree._Element) -> Tuple[str, str, str, pendulum.Date]:
+    title = cast(List[str], item.xpath("title/text()"))[0]
+    description = cast(List[str], item.xpath("description/text()"))[0]
+    url = cast(List[str], item.xpath("link/text()"))[0]
+    date = cast(
+        pendulum.Date,
+        pendulum.parse(cast(List[str], item.xpath("pubDate/text()"))[0], strict=False),
+    )
     return title, description, url, date
 
 
-def is_full_article(tree):
+def is_full_article(tree: lxml.etree._Element) -> bool:
     return bool(
         tree.xpath("/html/head/meta[@property='og:type' and @content='article']")
         and tree.xpath(
@@ -138,8 +147,8 @@ def is_full_article(tree):
     )
 
 
-def is_in_nynorsk(tree):
-    return tree.xpath("/html/@lang")[0] == "nn-NO"
+def is_in_nynorsk(tree: lxml.etree._Element) -> bool:
+    return tree.xpath("/html/@lang")[0] == "nn-NO"  # type: ignore[index]
 
 
 if __name__ == "__main__":
