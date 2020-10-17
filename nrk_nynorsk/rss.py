@@ -2,16 +2,13 @@ import logging
 import time
 from typing import Iterator, List, Tuple, cast
 
-from typing_extensions import Literal
-
-import pendulum
-
-import requests
 import lxml.etree
 import lxml.html
+import pendulum
+import requests
+from typing_extensions import Literal
 
-from nrk_nynorsk.models import Article
-from nrk_nynorsk.models import RSSFeed
+from nrk_nynorsk.models import Article, RSSFeed
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,5 @@
-from scrapy.spiders import SitemapSpider, CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider, Rule, SitemapSpider
 
 from nrk_nynorsk_scraper.items import ArticleItem
 

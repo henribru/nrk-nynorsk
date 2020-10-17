@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 import random
 from typing import Any, Sequence, cast
 
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
