@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Install Poetry
+        run: pip install poetry
+      
+      - name: Install dependencies
+        run: poetry install
+      
+      - name: Run Black
+        run: poetry run black --check --diff .
+      
+      - name: Run isort
+        run: poetry run isort --check-only --diff .
+      
+      - name: Run Mypy
+        run: poetry run mypy .
+        env:
+          DJANGO_SECRET_KEY: secret
+          DB_HOST: db_host
+          DB_PASSWORD: db_password
