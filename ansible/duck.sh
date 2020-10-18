@@ -1,0 +1,1 @@
+echo url="https://www.duckdns.org/update?domains=nrknynorsk&token=c5120aa1-8c4d-4ce8-bd36-75cd82f7afed&ip=" | curl -k -o ~/duckdns/duck.log -K -

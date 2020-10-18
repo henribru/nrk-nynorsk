@@ -1,0 +1,22 @@
+ server {
+ 	listen 80;
+	server_name localhost 127.0.0.1 nrknynorsk.duckdns.org 34.73.173.28;
+
+	location = /favicon.ico {
+		access_log off;
+		log_not_found off;
+	}
+
+	location /admin {
+		include proxy_params;
+		proxy_pass http://localhost:8000;
+
+		allow 127.0.0.1;
+		deny all;
+	}
+
+	location / {
+		include proxy_params;
+		proxy_pass http://localhost:8000;
+	}
+}

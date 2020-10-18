@@ -1,0 +1,10 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/nrk-nynorsk
+ExecStart=/opt/nrk-nynorsk/docker-entrypoint.sh
+
+[Install]
+WantedBy=multi-user.target

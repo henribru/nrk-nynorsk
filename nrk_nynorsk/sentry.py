@@ -9,6 +9,5 @@ def init_sentry():
         return
 
     sentry_sdk.init(
-        dsn=os.environ["SENTRY_DSN"],
-        integrations=[DjangoIntegration()],
+        dsn=os.environ["SENTRY_DSN"], integrations=[DjangoIntegration()],
     )

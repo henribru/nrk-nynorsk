@@ -88,12 +88,16 @@ def check_feed(feed, session):
         if not is_in_nynorsk(tree):
             logger.debug("Not in Nynorsk")
             continue
+        try:
+            publication_date = get_publication_date(tree)
+        except IndexError:
+            publication_date = date
         article, created = Article.objects.update_or_create(
             url=url,
             defaults={
                 "title": title,
                 "description": description,
-                "publication_date": date,
+                "publication_date": publication_date,
             },
         )
         if created:
@@ -141,6 +145,11 @@ def is_full_article(tree):
 def is_in_nynorsk(tree):
     return tree.xpath("/html/@lang")[0] == "nn-NO"
 
+
+def get_publication_date(tree):
+    return tree.xpath(
+        "//time[contains(@class, 'datePublished')]/@datetime"
+    )[0]
 
 if __name__ == "__main__":
     main()

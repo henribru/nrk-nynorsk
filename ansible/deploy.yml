@@ -1,0 +1,114 @@
+- name: Apt
+  apt:
+    update_cache: yes
+    name:
+      - curl
+      - postgresql
+      - postgresql-client
+      - nginx
+      - python3
+      - python3-dev
+      - python3-pip
+      - python3-venv
+      - python3-psycopg2
+
+- name: Postgres db
+  postgresql_db:
+    login_host: localhost
+    login_password: foo
+    name: nrk_nynorsk
+
+- name: Postgres user
+  postgresql_user:
+    db: nrk_nynorsk
+    login_host: localhost
+    login_password: foo
+    name: nrk_nynorsk
+    password: foo
+    priv: ALL
+
+- name: Postgres role
+  postgresql_query:
+    db: nrk_nynorsk
+    login_host: nrk_nynorsk
+    query: {{ item }}
+  with_items:
+    - ALTER ROLE nrk_nynorsk SET client_encoding TO 'utf8';
+    - ALTER ROLE nrk_nynorsk SET default_transaction_isolation TO 'read committed';
+    - ALTER ROLE nrk_nynorsk SET timezone TO 'UTC';
+
+- name: Nginx site
+  copy:
+    src: nrk_nynorsk
+    dest: /etc/nginx/sites-available
+
+- name: Enable Nginx site
+  file:
+    path: /etc/nginx/sites-enabled/nrk_nynorsk
+    src: /etc/nginx/sites-available/nrk_nynorsk
+    state: link
+
+- name: Install Certbot
+  snap:
+    name: certbot
+    classic: yes
+
+- name: Run Certbot
+  command: certbot --nginx --agree-tos -m henbruas@gmail.com --non-interactive -d nrknynorsk.duckdns.org --keep-until-expiring
+
+- name: Enable services
+  systemd:
+    name: {{ item }}
+    enabled: yes
+    state: started
+  with_items:
+    - nginx
+    - postgresql
+
+- name: Copy dyndns script
+  copy:
+    src: duck.sh
+    dest: /home/duckdns
+
+- name: Add dyndns cronjob
+  cron:
+    name: duckdns
+    job: ~/duckdns/duck.sh >/dev/null 2>&1
+    minute: "*/5"
+
+- name: Add service
+  copy:
+    src: nrk_nynorsk.service
+    dest: /etc/systemd/system
+
+- name: Add cronjob
+  cron:
+    name: nrk_nynorsk
+    job: cd /opt/nrk-nynorsk && /home/henbruas/.poetry/bin/poetry run python manage.py rss
+    hour: "*/4"
+
+- name: Pipx
+  pip:
+    name: pipx
+    extra_args: --user
+
+- name: Poetry
+  command: pipx install poetry
+
+- name: Git pull
+  git:
+    repo: https://github.com/henribru/nrk-nynorsk
+    dest: /opt/nrk-nynorsk
+
+- name: Poetry install
+  command: poetry install
+
+- name: Migrate
+  command: poetry run python manage.py migrate
+
+- name: Restart service
+  systemd:
+    name: nrk_nynorsk
+    enabled: yes
+    state: restarted
+
