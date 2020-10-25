@@ -1,0 +1,14 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "isort",
+      "pattern": [
+        {
+          "regexp": "^ERROR: .+(nrk_nynorsk/.+) (Imports are incorrectly sorted and/or formatted.)$",
+          "file": 1,
+          "message": 2
+        }
+      ]
+    }
+  ]
+}
