@@ -62,7 +62,10 @@ def main() -> None:
     with requests.Session() as session:
         session.headers.update({"User-Agent": "nrk_nynorsk_scraper"})
         for feed in RSSFeed.objects.iterator():
-            check_feed(feed, session)
+            try:
+                check_feed(feed, session)
+            except Exception:
+                logger.exception("Checking feed %s failed", feed)
 
 
 def check_feed(feed: RSSFeed, session: requests.Session) -> None:
