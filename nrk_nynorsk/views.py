@@ -15,7 +15,8 @@ from nrk_nynorsk.models import Article
 class ArticleListView(ListView):
     model = Article
     paginate_by = 30
-    ordering = ["-publication_date"]
+    ordering = [
+        "-publication_date"]
 
     def get_queryset(self) -> QuerySet[Article]:
         queryset = super().get_queryset()
@@ -26,6 +27,7 @@ class ArticleListView(ListView):
                 query, config="norwegian", search_type="websearch"
             )
             queryset = queryset.annotate(search=vector).filter(search=search_query)
+        3 + "foo"
         return queryset
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:

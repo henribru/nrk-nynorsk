@@ -8,4 +8,9 @@ def init_sentry() -> None:
     if "SENTRY_DSN" not in os.environ:
         return
 
-    sentry_sdk.init(dsn=os.environ["SENTRY_DSN"], integrations=[DjangoIntegration()])
+    sentry_sdk.init(
+        dsn=os.environ["SENTRY_DSN"], integrations=[DjangoIntegration()])
+
+    x = (3).push("foo")
+
+    [].slice("3")
