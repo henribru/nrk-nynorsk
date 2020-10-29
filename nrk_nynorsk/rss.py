@@ -47,9 +47,9 @@ feed_urls = [
     "https://www.nrk.no/vestland/siste.rss",
     "https://www.nrk.no/17mai/toppsaker.rss",
     "https://www.nrk.no/finnmarkslopet/toppsaker.rss",
-    "https://www.nrk.no/sport/fotball/toppsaker.rss",
+    # "https://www.nrk.no/sport/fotball/toppsaker.rss",
     "https://www.nrk.no/klassequizen/toppsaker.rss",
-    "https://www.nrk.no/kultur/litteratur/toppsaker.rss",
+    # "https://www.nrk.no/kultur/litteratur/toppsaker.rss",
     "https://www.nrk.no/mat/aktuelt.rss",
     "https://www.nrk.no/mgp/toppsaker.rss",
 ]
