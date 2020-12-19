@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install gcc -y
 
-RUN groupadd -r nrk_nynorsk && useradd --no-log-init -m -r -g nrk_nynorsk nrk_nynorsk
+RUN groupadd -r nrk_nynorsk && useradd --no-log-init --create-home --system --gid nrk_nynorsk nrk_nynorsk
 USER nrk_nynorsk
 ENV PATH=/home/nrk_nynorsk/.local/bin:$PATH
 
