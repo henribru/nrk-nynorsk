@@ -24,8 +24,8 @@
         <h1>Nynorskartiklar hos NRK</h1>
 
         <form method="GET">
-            <input type="text" name="q" value="{{ request.GET.q }}">
-            <button type="submit">Søk i artiklar</button>
+            <input type="text" name="q" value="{{ request.GET.q }}" aria-labelledby="search-button">
+            <button id="search-button" type="submit">Søk i artiklar</button>
             <button type="submit" name="lucky">Eg kjenner meg heldig</button>
         </form>
 
