@@ -4,13 +4,13 @@ WORKDIR /opt/app
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install curl gcc -y
+RUN apt-get update && apt-get install gcc -y
 
 RUN groupadd -r nrk_nynorsk && useradd --no-log-init -m -r -g nrk_nynorsk nrk_nynorsk
 USER nrk_nynorsk
+ENV PATH=/home/nrk_nynorsk/.local/bin:$PATH
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-ENV PATH=/home/nrk_nynorsk/.poetry/bin:$PATH
+RUN pip install --no-cache-dir poetry
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-dev
 
