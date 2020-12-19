@@ -35,4 +35,6 @@ class ArticleListView(ListView):
                 return super().get(request, *args, **kwargs)
             random_id = random.choice(ids)
             return redirect(super().get_queryset().get(id=random_id).url)
-        return super().get(request, *args, **kwargs)
+        response = super().get(request, *args, **kwargs)
+        response["Content-Language"] = "nn"
+        return response
