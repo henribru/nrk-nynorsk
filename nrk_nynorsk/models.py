@@ -10,6 +10,9 @@ class Article(models.Model):
     def __repr__(self) -> str:
         return f"<Article title={self.title!r}>"
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class RSSFeed(models.Model):
     url = models.TextField(unique=True)
@@ -20,3 +23,6 @@ class RSSFeed(models.Model):
 
     def __repr__(self) -> str:
         return f"<RSSFeed url={self.url!r}>"
+
+    def __str__(self) -> str:
+        return self.url
