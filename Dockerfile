@@ -1,10 +1,10 @@
-FROM python:3.8-slim
+FROM python:3.9-slim
 
 WORKDIR /opt/app
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install gcc -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install gcc curl -y && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r nrk_nynorsk && useradd --no-log-init --create-home --system --gid nrk_nynorsk nrk_nynorsk
 USER nrk_nynorsk

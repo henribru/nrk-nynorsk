@@ -1,33 +1,36 @@
-version: "3.8"
+version: "3.9"
 
 services:
   app:
-    image: henbruas/nrk_nynorsk:0.1.0
+    image: henbruas/nrk_nynorsk:latest
     ports:
-      - 80:8000
+      - 8000:8000
     environment:
-      ALLOWED_HOSTS: 127.0.0.1,localhost
-      DB_HOST: db
+      ALLOWED_HOSTS: 127.0.0.1,localhost,nrknynorsk.duckdns.org
+      DB_HOST: 104.248.82.54
       DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
       DB_PASSWORD_FILE: /run/secrets/postgres_password
+      SENTRY_DSN: https://0b279fc9e8a0463583d5002e0cc0bccc@o216689.ingest.sentry.io/5374157
+      DEBUG: "False"
     secrets:
       - django_secret_key
       - postgres_password
     deploy:
-      mode: replicated
-      replicas: 2
+      update_config:
+        order: start-first
+        failure_action: rollback
 
-  db:
-    image: postgres:12
-    environment:
-      POSTGRES_USER: nrk_nynorsk
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-    volumes:
-      - db:/var/lib/postgresql/data
-    secrets:
-      - postgres_password
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "nrk_nynorsk"]
+#  db:
+#    image: postgres:12
+#    environment:
+#      POSTGRES_USER: nrk_nynorsk
+#      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+#    volumes:
+#      - db:/var/lib/postgresql/data
+#    secrets:
+#      - postgres_password
+#    healthcheck:
+#      test: ["CMD", "pg_isready", "-U", "nrk_nynorsk"]
 
 secrets:
   django_secret_key:
